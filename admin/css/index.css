@@ -1,0 +1,37 @@
+body{
+	background-color: rgb(160, 13, 0) !important;
+	background-image: none !important;
+	font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.container{
+	background-color: none !important;
+}
+
+.form-login{
+	background-color: rgb(255, 238, 2);
+}
+
+.btn{
+	background-color: rgb(160, 13, 0);
+	font-size: 20px;
+}
+.btn:hover{
+	background-color: white;
+	color:rgb(155, 144, 0);
+	
+}
+.btn:active{
+	background-color: rgb(160, 13, 0);
+}
+
+.ot{
+	margin:40px;
+}
+
+.error-message{
+	display: none;
+	color: red !important;
+}
+
+
