@@ -25,6 +25,13 @@ if (isset($_SESSION['userid']) && isset($_SESSION['username'])) {
 
 <body id="page-top">
 
+  <style>
+  .error-message{
+	display: none;
+	color: red !important;
+}
+  </style>
+
   <!-- Page Wrapper -->
   <div id="wrapper">
 
@@ -114,57 +121,74 @@ if (isset($_SESSION['userid']) && isset($_SESSION['username'])) {
         <!-- add user -->
 
 
-        <form class="rt" action="addbillfetch.php" method="post" class="po" enctype='multipart/form-data' name="form2" style="margin:50px 50px;">
-        <div class="form-group">
-
-        <input  type="hidden" name="userid" value="<?php echo "".$_SESSION['userid'];?>"> 
-                        <label>Mã hóa đơn:</label>
-                        <input class="form-control"  type="text" name="bill_id" id="bill_id" placeholder="Nhập mã hóa đơn">                  
+        <form class="rt" id= "formAddBill"  method="post" class="po" enctype='multipart/form-data' name="form2" style="margin:50px 50px;">
+                    
+                    <div class="form-group">
+                      <input  type="hidden" name="userid" value="<?php echo "".$_SESSION['userid'];?>">
+                      <label>Mã hóa đơn:</label>
+                        <input class="form-control"  type="text" name="bill_id" id="billId" placeholder="Nhập mã hóa đơn VD: ETH 00001">   
+                        <p id ="idBillErr" class="error-message"></p>                                 
                     </div>
                     <div class="form-group">
                         <label>Tên người gửi: </label>
-                        <input class="form-control"  type="text" name="customer_sendname" id="customer_sendname" placeholder="Nhập mã hóa đơn">   
+                        <input class="form-control"  type="text" name="customer_sendname" id="customerSendname" placeholder="Nhập mã hóa đơn">
+                        <p id = "cusSentErr" class="error-message"></p>               
+
                     </div>
                     <div class="form-group">
                         <label>Số điện thoại người gửi: </label>
-                        <input class="form-control"  type="number" name="customer_sendtel" id="customer_sendtel" placeholder="Nhập số điện thoại người gửi">   
+                        <input class="form-control"  type="number" name="customer_sendtel" id="customerSendtel" placeholder="Nhập số điện thoại người gửi">  
+                        <p id="cusPhoneErr" class="error-message"></p>               
+
                     </div>
                     <div class="form-group">
                         <label>Tên người nhận: </label>
-                        <input class="form-control"  type="text" name="customer_receivername" id="customer_receivername" placeholder="Nhập tên người nhận ">   
+                        <input class="form-control"  type="text" name="customer_receivername" id="customerReceivername" placeholder="Nhập tên người nhận "> 
+                        <p id="receiveNameErr" class="error-message"></p>               
+
                     </div>
                     <div class="form-group">
                         <label>Số điện thoại người nhận: </label>
-                        <input class="form-control"  type="number" name="customer_receivertel" id="customer_receivertel" placeholder="Nhập số điện thoại người nhận">   
+                        <input class="form-control"  type="number" name="customer_receivertel" id="customerReceivertel" placeholder="Nhập số điện thoại người nhận">   
+                        <p id ="ReceivePhoneErr" class="error-message"></p>               
+
                     </div>
                     <div class="form-group">
-                        <label>địa chỉ người gửi: </label>
-                        <input class="form-control"  type="text" name="customer_sendadr" id="customer_sendadr" placeholder="Nhập địa chỉ người gửi:">   
+                        <label>Địa chỉ người gửi: </label>
+                        <input class="form-control"  type="text" name="customer_sendadr" id="customerSendadr" placeholder="Nhập địa chỉ người gửi:"> 
+                        <p id="sentAddErr" class="error-message"></p>               
+
                     </div>
                     <div class="form-group">
-                        <label>địa chỉ người nhận: </label>
-                        <input class="form-control"  type="text" name="customer_receiveradr" id="customer_receiveradr" placeholder="Nhập địa chỉ người nhận">   
+                        <label>Địa chỉ người nhận: </label>
+                        <input class="form-control"  type="text" name="customer_receiveradr" id="customerReceiveradr" placeholder="Nhập địa chỉ người nhận">   
+                        <p id = "receiveAddErr" class="error-message"></p>               
 
                     </div>
                     <div class="form-group">
                         <label>Cân nặng: </label>
-                        <input class="form-control"  type="number" name="weight" id="weight" placeholder="Nhập Cân nặng">   
+                        <input class="form-control"  type="number" name="weight" id="weight" placeholder="Nhập Cân nặng (đơn vị: kg)">   
+                        <p id= "weightErr" class="error-message"></p>               
 
                     </div>
                     <div class="form-group">
                         <label>Tổng tiền: </label>
                         <input class="form-control"  type="number" name="fee" id="fee" placeholder="Nhập Tổng tiền">   
+                        <p id="feeErr" class="error-message"></p>               
                         
                     </div>
                     <div class="form-group">
                         <label>Ngày gửi: </label>
-                        <input class="form-control"  type="date" name="datesend" id="datesend" placeholder="Nhập Ngày gửi">   
+                        <input class="form-control"  type="date" name="datesend" id="datesend" placeholder="Nhập Ngày gửi">
+                        <p id = "dateSentErr" class="error-message">Hello</p>               
+                           
                     </div>
                     <div class="form-group">
                         <label>Ngày nhận: </label>
                         <input class="form-control"  type="date" name="datereceived" id="datereceived" placeholder="Nhập Ngày nhận">   
+                        <p id ="dateReceiveErr" style = "color: green">Có thể để trống, update lại khi khách nhận hàng!</p>               
+                    </div>    
 
-                    </div>   
                     <input type="submit" class="btn btn-primary btn-user btn-block" name="addbill" value="Tạo hóa đơn"> 
        </form>
 
@@ -224,6 +248,7 @@ if (isset($_SESSION['userid']) && isset($_SESSION['username'])) {
   <!-- Custom scripts for all pages-->
   <script src="js/sb-admin-2.min.js"></script>
   
+  <script src="js/addBill.js"></script>
 </body>
 <script>
       function check(){

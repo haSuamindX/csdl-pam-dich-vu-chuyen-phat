@@ -21,54 +21,16 @@ if (isset($_SESSION['userid']) && isset($_SESSION['username'])) {
 
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
-  <script language="javascript">
-  function check(){
-    //for the name input validation
-    if(document.form2.name.value==""){
-      alert("hãy nhập tên");
-      document.form2.name.focus();
-      return false;
-    }
-    //for password validation
-    if(document.form2.password.value==""){
-      alert("nhập mật khẩu");
-      document.form2.password.focus();
-      return false;
-    }
-
-    //for phone no input validation
-    if(document.form2.phonenumber.value==""){
-      alert("nhập số điện thoại");
-      document.form2.phonenumber.focus();
-      return false;
-    }
-    //for DOB input validation
-    if(document.form2.dob.value==""){
-      alert("nhập ngày sinh");
-      document.form2.dob.focus();
-      return false;
-    }
-    if(document.form2.email.value==""){
-      alert("hãy nhập địa chỉ email");
-      return false;
-    }
-    em=document.form2.email.value;
-           f1=em.indexOf('@');
-           f2=em.indexOf('@',f1+1);
-           e1=em.indexOf('_');
-           e2=em.indexOf('_',e1+1);
-           n=em.length;
-           if(!(f1>0 && f2==-1 && e1>0 &&e2==-1 && f1!=e1+1 && e1!=f1+1 && e1!=f1+1 && f1!=n-1 && e1!=n-1)){
-            alert("nhập email sai");
-            document.form2.email.focus();
-            return false;
-           }
-           return true;
-  }
-</script>
 </head>
 
 <body id="page-top">
+
+<style>
+  .errMess{
+    color: red;
+    /* display: none; */
+  }
+</style>
 
   <!-- Page Wrapper -->
   <div id="wrapper">
@@ -163,16 +125,28 @@ if (isset($_SESSION['userid']) && isset($_SESSION['username'])) {
                <table>     
            <tr>
              <th> 
-                 Tên:<span style="color:red";>*</span><input class="form-control"  type="text" name="name" id="name" placeholder="Nhập đầy đủ họ tên bạn">
-                 Email:<span style="color:red";>*</span><input class="form-control" type="email" name="email" id="email" placeholder="Nhập email của bạn">
+                Tên:<span style="color:red";>*</span><input class="form-control"  type="text" name="name" id="name" placeholder="Nhập đầy đủ họ tên bạn">
+                <p class="errMess" id="nameErr"></p>
+
+                Email:<span style="color:red";>*</span><input class="form-control" type="email" name="email" id="email" placeholder="Nhập email của bạn">
+                <p class="errMess" id="emailErr"></p>
+
                 tên tài khoản:<span style="color:red";>*</span><input class="form-control" type="text" name="username" id="username" placeholder="nhập tên tài khoản">
-               Đặt mật khẩu:<span style="color:red";>*</span><input  class="form-control" type="password" id="password" name="password" placeholder="Đặt mật khẩu ở đây">
-               Ngày sinh:<span style="color:red";>*</span><input class="form-control" type="date" name="dob" id="dob"  required="">
-               Số điện thoại:<span style="color:red";>*</span><input class="form-control" type="tel" name="phonenumber" id="phonenumber" placeholder="Nhập số điện thoại của bạn" required="">
+                <p class="errMess" id="usNameErr"></p>
+
+                Đặt mật khẩu:<span style="color:red";>*</span><input  class="form-control" type="password" id="password" name="password" placeholder="Đặt mật khẩu ở đây">
+                <p class="errMess" id="passErr"></p>
+
+                Ngày sinh:<span style="color:red";>*</span><input class="form-control" type="date" name="dob" id="dob"  required="">
+                <p class="errMess" id="dobErr"></p>
+
+                Số điện thoại:<span style="color:red";>*</span><input class="form-control" type="tel" name="phonenumber" id="phonenumber" placeholder="Nhập số điện thoại của bạn" required="">
+                <p class="errMess" id="phoneNumErr"></p>
+
              </th>   
            </tr>
              <th>
-               <input type="submit" class="btn btn-primary btn-user btn-block" name="signup" value="Đăng ký">
+               <input id="btnSubmit" type="submit" class="btn btn-primary btn-user btn-block" name="signup" value="Đăng ký">
            </tr>          
          </table>     
        </form>
@@ -233,13 +207,73 @@ if (isset($_SESSION['userid']) && isset($_SESSION['username'])) {
 
   <!-- Custom scripts for all pages-->
   <script src="js/sb-admin-2.min.js"></script>
+
+  <script src="./js/addUser.js"></script>
+
+  <script language="javascript">
+  function check(e){
+    //for the name input validation
+    if(document.form2.name.value==""){
+      document.getElementById("nameErr").innerHTML = "Tên không được bỏ trống"
+      document.form2.name.focus();
+      e.preventDefault()
+    }
+
+    if(document.form2.username.value==""){
+      document.getElementById("usNameErr").innerHTML = "Tên tài khoản không được bỏ trống"
+      document.form2.name.focus();
+      e.preventDefault()
+    }
+
+    //for password validation
+    if(document.form2.password.value==""){
+      document.getElementById("passErr").innerHTML = "Password không được bỏ trống"
+      document.form2.password.focus();
+      e.preventDefault()
+;
+    }
+
+    //for phone no input validation
+    if(document.form2.phonenumber.value==""){
+      document.getElementById("phoneNumErr").innerHTML = "Số điện thoại không được bỏ trống";
+      document.form2.phonenumber.focus();
+      e.preventDefault()
+
+    }
+    //for DOB input validation
+    if(document.form2.dob.value==""){
+      document.getElementById("dobErr").innerHTML = "Ngày sinh không được bỏ trống"
+      document.form2.dob.focus();
+      e.preventDefault()
+
+    }
+    if(document.form2.email.value==""){
+      document.getElementById("emailErr").innerHTML = "Email không được bỏ trống"
+      e.preventDefault()
+
+    }
+    em=document.form2.email.value;
+           f1=em.indexOf('@');
+           f2=em.indexOf('@',f1+1);
+           e1=em.indexOf('_');
+           e2=em.indexOf('_',e1+1);
+           n=em.length;
+           if(!(f1>0 && f2==-1 && e1>0 &&e2==-1 && f1!=e1+1 && e1!=f1+1 && e1!=f1+1 && f1!=n-1 && e1!=n-1)){
+          document.getElementById("emailErr").innerHTML = "Email sai định dạng"
+;
+            document.form2.email.focus();
+            return false;
+           }
+           return true;
+  }
+  document.form2.addEventListener("submit", () =>{
+    check(event)
+  })
+  // check()
+</script>
+
   
 </body>
-<script>
-      function check(){
-        alert("your account has been successfully created");
-      }
-    </script>
 </html>
 <?php 
 }else{

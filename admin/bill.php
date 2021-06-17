@@ -23,7 +23,10 @@ if (isset($_SESSION['userid']) && isset($_SESSION['username'])) {
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
+
+
 </head>
+<?php require("./config_database.php");?>
 
 <body id="page-top">
 
@@ -50,7 +53,7 @@ if (isset($_SESSION['userid']) && isset($_SESSION['username'])) {
           <!-- Topbar Search -->
           <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
             <div class="input-group">
-              <input type="text" class="form-control bg-light border-0 small" placeholder="Tìm kiếm theo tên..." name="var" aria-label="Search" aria-describedby="basic-addon2" value="<?php if(isset($_GET['var'])) {echo $_GET['var'];} ?>">
+              <input type="text" class="form-control bg-light border-0 small" placeholder="Tìm kiếm theo ID đơn hàng" name="id" aria-label="Search" aria-describedby="basic-addon2" value="<?php if(isset($_GET['id'])) {echo $_GET['id'];} ?>">
               <div class="input-group-append">
                 <button class="btn btn-primary" type="submit">
                   <i class="fas fa-search fa-sm"></i>
@@ -111,9 +114,45 @@ if (isset($_SESSION['userid']) && isset($_SESSION['username'])) {
 
           <!-- Page Heading -->
           <h1 class="h3 mb-4 text-gray-800">Các hóa đơn</h1>
-          <a class="btn btn-primary" style="margin-bottom:15px;" href="addbill.php" >Thêm hóa đơn</a>
+          <a  class="btn btn-primary" style="margin-bottom:15px;" href="addbill.php" >Thêm hóa đơn</a>
+          
+          <form id="bill_filter" action="bill.php">
+          <select class="form-select btn btn-success" name="var" aria-label="Default select example">
+          <option>Tên Nhân Viên</option>
+
+             
+             <?php
+            $query = "select username from employee";
+            $nv=$con->query($query);
+
+            
+            while($d = $nv -> fetch_assoc()){
+              if(isset($_GET['var']) && ($_GET['var']) !='' && $_GET['var'] == $d['username']){
+                $option = "selected";
+              }else{
+                $option = "";
+              }
+             ?>
+                <option <?php echo $option; ?> value="<?php echo $d['username']?>"><?php echo $d['username']?></option>
+             <?php }?>
+          </select>
+          <div style="display:inline;" class="form-group">
+            <label>Từ Ngày: </label>
+              <input style="display:inline; width:fit-content" class="form-control"  type="date" name="filter_from" id="datesend" placeholder="Từ">           
+                           
+          </div>
+          <div style="display:inline;" class="form-group">
+            <label>Đến Ngày: </label>
+              <input style="display:inline; width:fit-content" class="form-control"  type="date" name="filter_to" id="datesend" placeholder="Đến">           
+                           
+          </div>
+
+          <button typr="submit" class="btn btn-success float-right">Lọc</button>
+          </form>
+          
+
   
-          <table class="table table-striped">
+          <table class="table table-striped mt-3">
     <thead>
       <tr>
       <!-- <th>
@@ -132,10 +171,27 @@ if (isset($_SESSION['userid']) && isset($_SESSION['username'])) {
     </thead>
     <tbody>
       <?php
+      if(isset($_GET['var']) && ($_GET['var']) !=''){
+        $name= $_GET['var'];
+      }else{
+        $name="%";
+      }
+      if(isset($_GET['id']) && ($_GET['id']) !=''){
+        $id= $_GET['id'];
+      }else{
+        $id="%";
+      }
+      if(isset($_GET['filter_from']) && ($_GET['filter_from']) !=''){
+        $filter_from= $_GET['filter_from'];
+      }else{
+        $filter_from="%";
+      }
+      if(isset($_GET['filter_to']) && ($_GET['filter_to']) !=''){
+        $filter_to= $_GET['filter_to'];
+      }else{
+        $filter_to="%";
+      }
       
-      $con=mysqli_connect("localhost","root","","pam");
-      if(isset($_GET['var']) && ($_GET['var']) !='')
-      {
         $sel = 'select bill.bill_id, 
         bill.customer_sendname,
         bill.customer_sendtel, 
@@ -149,30 +205,18 @@ if (isset($_SESSION['userid']) && isset($_SESSION['username'])) {
         bill.datereceived,
         bill.idb,
         employee.name 
-        from bill,employee where bill.id = employee.id and bill.bill_id like "%'.$_GET['var'].'%" ';
-      }
-      else
-      {
-        $sel = 'select bill.bill_id, 
-        bill.customer_sendname,
-        bill.customer_sendtel, 
-        bill.customer_receivername,
-        bill.customer_receivertel,
-        bill.customer_sendadr,
-        bill.customer_receiveradr,
-        bill.weight,
-        bill.fee,
-        bill.datesend,
-        bill.datereceived,
-        bill.idb,
-        employee.name 
-        from bill,employee where bill.id = employee.id';
-      }
+        from bill,employee where bill.id = employee.id and employee.username like "%'.$name.'%" 
+        and bill_id like "%'.$id.'%"';
+      /*and bill.datesend BETWEEN("'.$filter_from.'" AND "'.$filter_from.'") */
+
+      
+
       // $sel="SELECT * FROM signup";
       $ms=$con->query($sel);
+      $total_weight = 0;
+      $total_fee = 0;
 
-     while($row=$ms->fetch_assoc()){
-    ?>
+     while($row=$ms->fetch_assoc()){ ?>
       <tr>
        
           <td><?php echo $row['bill_id']; ?></td>
@@ -187,11 +231,34 @@ if (isset($_SESSION['userid']) && isset($_SESSION['username'])) {
            
       </tr>
       </tr>
+      <?php $total_weight += $row['weight'];
+           $total_fee += $row['fee'];
+      ?>
 
     <?php  } ?>
+    <hr>
+  <tr style="background:gray; color:#fff" >
+       
+       <td>Tổng</td>
+       <td></td>
+       <td><strong><?php echo $total_weight; ?> kg</strong></td>
+       <td><strong><?php echo $total_fee; ?> VNĐ</strong></td>
+       <td></td>
+       <td></td>
+       <td></td>
+       <td></td>
+       <td></td>
+
+
+
+
+        
+   </tr>
       
     </tbody>
+    
   </table>
+
 
         </div>
 

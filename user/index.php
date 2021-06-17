@@ -17,6 +17,8 @@
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
+  <link href = "./css/index.css" rel = "stylesheet">
+
 </head>
 
 <body class="bg-gradient-primary">
@@ -36,12 +38,12 @@
               <div class="col-lg-6">
                 <div class="p-5" style="margin-top:50px;">
                   <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-4">Chào mừng trở lại!
-                      <p>user</p>
+                    <h1 class="h4 text-gray-900 mb-4">Welcome back to PAM
+                      <p>User</p>
                     </h1>
                   </div>
 
-                  <form class="user" action="loginfetch.php" method="post">
+                  <form class="user" method="post">
                   <?php if (isset($_GET['error'])) { ?>
      		<p class="error"><?php echo $_GET['error']; ?></p>
      	<?php } ?>
@@ -50,10 +52,13 @@
                     </div>
                     <div class="form-group">
                       <input type="password" name="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Mật khẩu ...">
-                    </div>               
+                    </div>
+                   
                     <p>
-                     <input class="btn btn-primary btn-user btn-block" type="submit" name="log" value="Đăng nhập">
-                    </p>                                
+                     <input class="btn btn-primary btn-user btn-block" type="submit" name="log" value="Login">
+                    </p> 
+                    <p class="error-message" id = "name-error" style= "text-align: center; margin-bottom: 0">Hello xin chào</p>                  
+                    <p class="error-message" id = "pass-error" style= "text-align: center; margin-top: 0; margin-bottom: 0">Hello xin chào</p>                                 
                   </form>               
                 </div>
               </div>
@@ -76,6 +81,9 @@
 
   <!-- Custom scripts for all pages-->
   <script src="js/sb-admin-2.min.js"></script>
+
+  <script src="./js/index.js"></script>
+
 
 </body>
     <script>

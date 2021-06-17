@@ -19,10 +19,10 @@ if (isset($_SESSION['userid']) && isset($_SESSION['username'])) {
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
-  <!-- Custom styles for this template-->
+  <link href ="./css/index.css" rel="stylesheet">
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
-  <!-- <link href ="./css/index.css" rel = "stylesheet"> -->
+  <!-- Custom styles for this template-->
 </head>
 
 <body id="page-top">
@@ -121,7 +121,7 @@ if (isset($_SESSION['userid']) && isset($_SESSION['username'])) {
         <!-- add user -->
         
         <form id = "formAddBill" class="rt" method="post" class="po" enctype='multipart/form-data' name="form2" style="margin:50px 50px;">
-        <div class="form-group">
+                     <div class="form-group">
                         <label>Mã hóa đơn:</label>
                         <input class="form-control"  type="text" name="bill_id" id="billId" placeholder="Nhập mã hóa đơn VD: ETH 00001">   
                         <p id ="idBillErr" class="error-message"></p>               
@@ -183,7 +183,7 @@ if (isset($_SESSION['userid']) && isset($_SESSION['username'])) {
                     <div class="form-group">
                         <label>Ngày nhận: </label>
                         <input class="form-control"  type="date" name="datereceived" id="datereceived" placeholder="Nhập Ngày nhận">   
-                        <p id ="dateReceiveErr" class="error-message">Hello</p>               
+                        <p id ="dateReceiveErr" style = "color: green">Có thể để trống, update lại khi khách nhận hàng!</p>               
 
                     </div>   
                     <input type="submit" class="btn btn-primary btn-user btn-block" name="addbill" value="Tạo hóa đơn"> 

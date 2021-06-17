@@ -22,53 +22,17 @@ if (isset($_SESSION['userid']) && isset($_SESSION['username'])) {
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
   <script language="javascript">
-  function check(){
-    //for the name input validation
-    if(document.form2.name.value==""){
-      alert("hãy nhập tên");
-      document.form2.name.focus();
-      return false;
-    }
-    //for password validation
-    if(document.form2.password.value==""){
-      alert("nhập mật khẩu");
-      document.form2.password.focus();
-      return false;
-    }
 
-    //for phone no input validation
-    if(document.form2.phonenumber.value==""){
-      alert("nhập số điện thoại");
-      document.form2.phonenumber.focus();
-      return false;
-    }
-    //for DOB input validation
-    if(document.form2.dob.value==""){
-      alert("nhập ngày sinh");
-      document.form2.dob.focus();
-      return false;
-    }
-    if(document.form2.email.value==""){
-      alert("hãy nhập địa chỉ email");
-      return false;
-    }
-    em=document.form2.email.value;
-           f1=em.indexOf('@');
-           f2=em.indexOf('@',f1+1);
-           e1=em.indexOf('_');
-           e2=em.indexOf('_',e1+1);
-           n=em.length;
-           if(!(f1>0 && f2==-1 && e1>0 &&e2==-1 && f1!=e1+1 && e1!=f1+1 && e1!=f1+1 && f1!=n-1 && e1!=n-1)){
-            alert("nhập email sai");
-            document.form2.email.focus();
-            return false;
-           }
-           return true;
-  }
 </script>
 </head>
 
 <body id="page-top">
+<style>
+    .error-message{
+	  /* display: none; */
+	  color: red !important;
+    }
+  </style>
 
   <!-- Page Wrapper -->
   <div id="wrapper">
@@ -165,55 +129,61 @@ if (isset($_SESSION['userid']) && isset($_SESSION['username'])) {
                    $rk=$con->query($sel);
                    while($row=$rk->fetch_assoc()){
                   ?>
-                 <form class="rt" action="updatebillfetch.php" method="post" class="po" enctype='multipart/form-data' name="form2" style="margin:50px 50px;">
-        <div class="form-group">
-                    <p><input type="hidden" name="id" value="<?php echo $id; ?>"</p>
+                 <form class="rt" id = "formUpdate"  method="post" class="po" enctype='multipart/form-data' name="form2" style="margin:50px 50px;">
+                    <div class="form-group">                   
                         <label>Mã hóa đơn:</label>
-                        <input class="form-control"  type="text" name="bill_id" id="bill_id" placeholder="Nhập mã hóa đơn" value="<?php echo $row['bill_id']; ?>">                  
+                        <input class="form-control"  type="text" name="bill_id" id="billId" placeholder="Nhập mã hóa đơn" value="<?php echo $row['bill_id']; ?>">           
+                        <p id ="idBillErr" class="error-message"></p>        
                     </div>
                     <div class="form-group">
                         <label>Tên người gửi: </label>
-                        <input class="form-control"  type="text" name="customer_sendname" id="customer_sendname" placeholder="Nhập mã hóa đơn" value="<?php echo $row['customer_sendname']; ?>">   
+                        <input class="form-control"  type="text" name="customer_sendname" id="customerSendname" placeholder="Nhập tên người gửi" value="<?php echo $row['customer_sendname']; ?>">   
+                        <p id = "cusSentErr" class="error-message"></p>
                     </div>
                     <div class="form-group">
                         <label>Số điện thoại người gửi: </label>
-                        <input class="form-control"  type="number" name="customer_sendtel" id="customer_sendtel" placeholder="Nhập số điện thoại người gửi" value="<?php echo $row['customer_sendtel']; ?>">   
+                        <input class="form-control"  type="number" name="customer_sendtel" id="customerSendtel" placeholder="Nhập số điện thoại người gửi" value="<?php echo $row['customer_sendtel']; ?>">   
+                        <p id="cusPhoneErr" class="error-message"></p>
                     </div>
                     <div class="form-group">
                         <label>Tên người nhận: </label>
-                        <input class="form-control"  type="text" name="customer_receivername" id="customer_receivername" placeholder="Nhập tên người nhận " value="<?php echo $row['customer_receivername']; ?>">   
+                        <input class="form-control"  type="text" name="customer_receivername" id="customerReceivername" placeholder="Nhập tên người nhận " value="<?php echo $row['customer_receivername']; ?>">  
+                        <p id="receiveNameErr" class="error-message"></p>   
                     </div>
                     <div class="form-group">
                         <label>Số điện thoại người nhận: </label>
-                        <input class="form-control"  type="number" name="customer_receivertel" id="customer_receivertel" placeholder="Nhập số điện thoại người nhận" value="<?php echo $row['customer_receivertel']; ?>">   
+                        <input class="form-control"  type="number" name="customer_receivertel" id="customerReceivertel" placeholder="Nhập số điện thoại người nhận" value="<?php echo $row['customer_receivertel']; ?>">   
+                        <p id ="ReceivePhoneErr" class="error-message"></p>   
                     </div>
                     <div class="form-group">
                         <label>địa chỉ người gửi: </label>
-                        <input class="form-control"  type="text" name="customer_sendadr" id="customer_sendadr" placeholder="Nhập địa chỉ người gửi:" value="<?php echo $row['customer_sendadr']; ?>">   
+                        <input class="form-control"  type="text" name="customer_sendadr" id="customerSendadr" placeholder="Nhập địa chỉ người gửi:" value="<?php echo $row['customer_sendadr']; ?>"> 
+                        <p id="sentAddErr" class="error-message"></p>   
                     </div>
                     <div class="form-group">
-                        <label>địa chỉ người nhận: </label>
-                        <input class="form-control"  type="text" name="customer_receiveradr" id="customer_receiveradr" placeholder="Nhập địa chỉ người nhận" value="<?php echo $row['customer_receiveradr']; ?>">   
-
+                        <label>Địa chỉ người nhận: </label>
+                        <input class="form-control"  type="text" name="customer_receiveradr" id="customerReceiveradr" placeholder="Nhập địa chỉ người nhận" value="<?php echo $row['customer_receiveradr']; ?>">   
+                        <p id = "receiveAddErr" class="error-message"></p>   
                     </div>
                     <div class="form-group">
                         <label>Cân nặng: </label>
                         <input class="form-control"  type="number" name="weight" id="weight" placeholder="Nhập Cân nặng" value="<?php echo $row['weight']; ?>">   
-
+                        <p id= "weightErr" class="error-message"></p>
                     </div>
                     <div class="form-group">
                         <label>Tổng tiền: </label>
                         <input class="form-control"  type="number" name="fee" id="fee" placeholder="Nhập Tổng tiền" value="<?php echo $row['fee']; ?>">   
-                        
+                        <p id="feeErr" class="error-message"></p>
                     </div>
                     <div class="form-group">
                         <label>Ngày gửi: </label>
-                        <input class="form-control"  type="date" name="datesend" id="datesend" placeholder="Nhập Ngày gửi" value="<?php echo $row['datesend']; ?>">   
+                        <input class="form-control"  type="date" name="datesend" id="datesend" placeholder="Nhập ngày gửi" value="<?php echo $row['datesend']; ?>"> 
+                        <p id = "dateSentErr" class="error-message"></p>     
                     </div>
                     <div class="form-group">
                         <label>Ngày nhận: </label>
-                        <input class="form-control"  type="date" name="datereceived" id="datereceived" placeholder="Nhập Ngày nhận" value="<?php echo $row['datereceived']; ?>">   
-
+                        <input class="form-control"  type="date" name="datereceived" id="datereceived" placeholder="Nhập ngày nhận" value="<?php echo $row['datereceived']; ?>">   
+                        <p id ="dateReceiveErr" class="error-message" style = "color: green">Cập nhật lại khi khách nhận hàng!</p>     
                     </div>   
                     <input type="submit" class="btn btn-primary btn-user btn-block" name="update" value="Cập nhật"> 
        </form>
@@ -275,6 +245,7 @@ if (isset($_SESSION['userid']) && isset($_SESSION['username'])) {
   <!-- Custom scripts for all pages-->
   <script src="js/sb-admin-2.min.js"></script>
   
+  <script src = "./js/addBill.js"></script>
 </body>
 <script>
       function check(){
